@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/SantiagoBedoya/gobank-users-api/api"
 	"github.com/SantiagoBedoya/gobank-users-api/repositories/postgres"
 	"github.com/SantiagoBedoya/gobank-users-api/users"
 	helmet "github.com/danielkov/gin-helmet"
@@ -49,7 +50,7 @@ func main() {
 	{
 		repository := postgres.NewPostgreSQLRepository(db, timeout)
 		srv := users.NewService(repository)
-		handler := users.NewHandler(srv)
+		handler := api.NewHandler(srv)
 		r.POST("", handler.Create)
 		r.POST("/login", handler.Login)
 		r.GET("/:id", handler.FindByID)

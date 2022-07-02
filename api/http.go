@@ -1,8 +1,9 @@
-package users
+package api
 
 import (
 	"net/http"
 
+	"github.com/SantiagoBedoya/gobank-users-api/users"
 	"github.com/SantiagoBedoya/gobank-utils/httperrors"
 	"github.com/gin-gonic/gin"
 )
@@ -15,16 +16,16 @@ type Handler interface {
 }
 
 type handler struct {
-	srv Service
+	srv users.Service
 }
 
 // NewHandler return the implementation of Handler interface
-func NewHandler(srv Service) Handler {
+func NewHandler(srv users.Service) Handler {
 	return &handler{srv: srv}
 }
 
 func (h *handler) Create(c *gin.Context) {
-	var data User
+	var data users.User
 	if err := c.ShouldBindJSON(&data); err != nil {
 		httpErr := httperrors.NewBadRequestError("invalid JSON body")
 		c.JSON(httpErr.StatusCode, httpErr)
@@ -38,7 +39,7 @@ func (h *handler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, u)
 }
 func (h *handler) Login(c *gin.Context) {
-	var data User
+	var data users.User
 	if err := c.ShouldBindJSON(&data); err != nil {
 		httpErr := httperrors.NewBadRequestError("invalid JSON body")
 		c.JSON(httpErr.StatusCode, httpErr)
